@@ -41,7 +41,7 @@ namespace SQL_light
 
             string stm = "SELECT * FROM data_table";
             var cmd = new SQLiteCommand(stm, con);
-            dr =cmd.ExecuteReader();
+            dr = cmd.ExecuteReader();
             while (dr.Read())
             {
                 dataGridView1.Rows.Insert(0, dr.GetString(0), dr.GetString(1));
@@ -59,11 +59,81 @@ namespace SQL_light
                     SQLiteCommand command = new SQLiteCommand(sql, sqlite);
                     command.ExecuteNonQuery();
                 }
-               
+
             }
             else
             {
                 MessageBox.Show("La base de datos no se puede crear");
+                return;
+            }
+        }
+
+        private void btnInsertar_Click(object sender, EventArgs e)
+        {
+            var con = new SQLiteConnection(cs);
+            con.Open();
+            var cmd = new SQLiteCommand(con);
+            try
+            {
+                cmd.CommandText = "INSERT INTO test (name, id) VALUES(@name, @id)";
+                string NAME = txbNombre.Text;
+                string ID = txbID.Text;
+                cmd.Parameters.AddWithValue("@name", NAME);
+                cmd.Parameters.AddWithValue("@id", ID);
+
+                dataGridView1.ColumnCount = 2;
+                dataGridView1.Columns[0].Name = "Nombre";
+                dataGridView1.Columns[1].Name = "ID";
+                string[] row = new string[] { NAME, ID };
+                dataGridView1.Rows.Add(row);
+                cmd.ExecuteNonQuery();
+            }
+            
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudieron insertar los datos");
+                return;
+            }
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            var con = new SQLiteConnection(cs);
+            con.Open();
+            var cmd = new SQLiteCommand(con);
+            try
+            {
+                cmd.CommandText = "UPDATE test SET id=@id WHERE name=@name";
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@name", txbNombre.Text);
+                cmd.Parameters.AddWithValue("@id", txbID.Text);
+                cmd.ExecuteNonQuery();
+                data_show();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudieron actualizar los datos");
+                return;
+            }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            var con = new SQLiteConnection(cs);
+            con.Open();
+            var cmd = new SQLiteCommand(con);
+            try
+            {
+                cmd.CommandText = "DELETE FROM test WHERE name=@name";
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@name", txbNombre.Text);
+                cmd.ExecuteNonQuery();
+                dataGridView1.Rows.Clear();
+                data_show();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudieron eliminar los datos");
                 return;
             }
         }

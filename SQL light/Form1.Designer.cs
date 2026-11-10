@@ -115,6 +115,7 @@
             btnInsertar.TabIndex = 6;
             btnInsertar.Text = "Insertar";
             btnInsertar.UseVisualStyleBackColor = true;
+            btnInsertar.Click += btnInsertar_Click;
             // 
             // btnActualizar
             // 
@@ -124,6 +125,7 @@
             btnActualizar.TabIndex = 7;
             btnActualizar.Text = "Actualizar";
             btnActualizar.UseVisualStyleBackColor = true;
+            btnActualizar.Click += btnActualizar_Click;
             // 
             // btnEliminar
             // 
@@ -133,6 +135,7 @@
             btnEliminar.TabIndex = 8;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // Form1
             // 
